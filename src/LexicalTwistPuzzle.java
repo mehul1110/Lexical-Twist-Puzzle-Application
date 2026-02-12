@@ -1,12 +1,10 @@
 import java.util.Scanner;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public class LexicalTwistPuzzle {
 
     public static void main(String[] args) {
 
-        System.out.println("Lexical Twist Puzzle");
+        printHeader();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -16,85 +14,28 @@ public class LexicalTwistPuzzle {
         System.out.print("Enter second word: ");
         String secondWord = scanner.nextLine();
 
-        // UC3 – Validation
-        if (firstWord.contains(" ") || secondWord.contains(" ")) {
-            System.out.println("Invalid word input");
+        if (!WordValidator.isValid(firstWord) ||
+                !WordValidator.isValid(secondWord)) {
+
+            System.out.println("Invalid word input.");
             return;
         }
 
-        // UC4 – Reverse Check
-        String reversed = new StringBuilder(firstWord)
-                .reverse()
-                .toString();
+        LexicalAnalyzer analyzer = new LexicalAnalyzer();
 
-        if (reversed.equalsIgnoreCase(secondWord)) {
+        String result = analyzer.analyze(firstWord, secondWord);
 
-            // UC5 – Transform if Reverse Match
-            String transformed = reversed
-                    .toLowerCase()
-                    .replaceAll("[aeiou]", "@");
+        printResult(result);
+    }
 
-            System.out.println(transformed);
+    private static void printHeader() {
+        System.out.println("=================================");
+        System.out.println("        Lexical Twist Puzzle      ");
+        System.out.println("=================================");
+    }
 
-        } else {
-
-            // UC6 – Combine and Count
-            String combined = (firstWord + secondWord).toUpperCase();
-
-            int vowels = 0;
-            int consonants = 0;
-
-            for (char c : combined.toCharArray()) {
-
-                if ("AEIOU".indexOf(c) != -1) {
-                    vowels++;
-                }
-                else if (Character.isLetter(c)) {
-                    consonants++;
-                }
-            }
-
-            // UC7 – Rule-Based Output
-
-            if (vowels > consonants) {
-
-                Set<Character> uniqueVowels = new LinkedHashSet<>();
-
-                for (char c : combined.toCharArray()) {
-                    if ("AEIOU".indexOf(c) != -1) {
-                        uniqueVowels.add(c);
-                        if (uniqueVowels.size() == 2) {
-                            break;
-                        }
-                    }
-                }
-
-                for (char c : uniqueVowels) {
-                    System.out.print(c);
-                }
-
-            }
-            else if (consonants > vowels) {
-
-                Set<Character> uniqueConsonants = new LinkedHashSet<>();
-
-                for (char c : combined.toCharArray()) {
-                    if ("BCDFGHJKLMNPQRSTVWXYZ".indexOf(c) != -1) {
-                        uniqueConsonants.add(c);
-                        if (uniqueConsonants.size() == 2) {
-                            break;
-                        }
-                    }
-                }
-
-                for (char c : uniqueConsonants) {
-                    System.out.print(c);
-                }
-
-            }
-            else {
-                System.out.println("Vowels and consonants are equal");
-            }
-        }
+    private static void printResult(String result) {
+        System.out.println("\n--- Puzzle Result ---");
+        System.out.println(result);
     }
 }
