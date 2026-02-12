@@ -24,9 +24,15 @@ public class LexicalTwistPuzzle {
                 .toString();
 
         if (reversed.equalsIgnoreCase(secondWord)) {
-            System.out.println("Words are reverse of each other");
+
+            String transformed = reversed
+                    .toLowerCase()
+                    .replaceAll("[aeiou]", "@");
+
+            System.out.println(transformed);
+
         } else {
-            System.out.println("Words are NOT reverse of each other");
+            System.out.println("No reverse match");
         }
     }
 }
